@@ -75,7 +75,7 @@
 
    <!--Botones-->
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/navSuperior"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -111,57 +111,42 @@
         android:background="@color/purple_500"
         android:columnCount="4"
         android:rowCount="4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
         android:useDefaultMargins="true"
-
+        app:layout_constraintBottom_toTopOf="@+id/navInferior"
+        app:layout_constraintTop_toBottomOf="@+id/navSuperior"
         >
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:gravity="center"
-            android:text="0"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="30sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:gravity="center"
-            android:text="0"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="30sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:gravity="center"
-            android:text="0"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="30sp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:gravity="center"
-            android:text="0"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="30sp"/>
 
 
     </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/navInferior"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Boton" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Boton" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Boton" />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
