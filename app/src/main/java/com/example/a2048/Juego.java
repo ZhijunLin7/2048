@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -29,8 +30,12 @@ public class Juego extends AppCompatActivity {
         setContentView(R.layout.activity_juego);
 
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
-
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
         gridJuego = (GridLayout) findViewById(R.id.Gridjuego);
+        gridJuego.getLayoutParams().height=width-40;
         for (int i = 0; i < 16; i++) {
             this.añadirTextview(gridJuego);
         }
