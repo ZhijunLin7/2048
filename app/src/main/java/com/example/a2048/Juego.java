@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 public class Juego extends AppCompatActivity {
 
-    private GridLayout gridJuego;
+    private GridLayout gridfondo;
     private GestureDetectorCompat gestureDetector;
-    private Button btest;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +30,19 @@ public class Juego extends AppCompatActivity {
         setContentView(R.layout.activity_juego);
 
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
+
+
+        gridfondo = (GridLayout) findViewById(R.id.Gridfondo);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
-        gridJuego = (GridLayout) findViewById(R.id.Gridjuego);
-        gridJuego.getLayoutParams().height=width-40;
+        gridfondo.getLayoutParams().height = width - 40;
         for (int i = 0; i < 16; i++) {
-            this.añadirTextview(gridJuego);
+            this.añadirTextview(gridfondo);
         }
-
-
     }
+
+    //----------------------------------------------------------------------------------------------
 
     //Gesture detector
     public class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -69,12 +70,6 @@ public class Juego extends AppCompatActivity {
             return super.onFling(e1, e2, velocityX, velocityY);
         }
 
-        @Override
-        public boolean onDown(MotionEvent e) {
-            Toast.makeText(Juego.this, "onDown", Toast.LENGTH_SHORT).show();
-            return super.onDown(e);
-        }
-
     }
 
     @Override
@@ -83,22 +78,28 @@ public class Juego extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
+    //----------------------------------------------------------------------------------------------
+
     //Añadir textview al Gridlayout
     public void añadirTextview(GridLayout gridJuego) {
 
-        GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(
-                GridLayout.spec(GridLayout.UNDEFINED, 1f),
-                GridLayout.spec(GridLayout.UNDEFINED, 1f)
-        );
+        GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(GridLayout.spec(GridLayout.UNDEFINED, 1f),
+                GridLayout.spec(GridLayout.UNDEFINED, 1f));
 
         TextView textView = new TextView(this);
+        textView.setBackgroundResource(R.drawable.carta2048);
+        textView.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+
+
         textView.setText("0");
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(30);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
-        textView.setBackgroundResource(R.drawable.carta2048);
-        textView.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
         textView.setTextColor(Color.WHITE);
+
+
+
+
 
         gridJuego.addView(textView, layoutParams);
     }

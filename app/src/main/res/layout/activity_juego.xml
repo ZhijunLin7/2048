@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fondo"
     tools:context=".Juego">
 
     <TextView
@@ -14,6 +15,7 @@
         android:text="2048"
         android:textSize="60sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -104,11 +106,10 @@
 
     <!--El juego-->
     <GridLayout
-        android:id="@+id/Gridjuego"
+        android:id="@+id/Gridfondo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
-        android:background="@color/purple_500"
         android:columnCount="4"
         android:rowCount="4"
         android:useDefaultMargins="true"
@@ -117,8 +118,8 @@
         >
 
 
-
     </GridLayout>
+
 
     <LinearLayout
         android:id="@+id/navInferior"
