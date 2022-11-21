@@ -14,24 +14,24 @@ public class MainActivity extends AppCompatActivity {
     private Button botonComenzar;
     private ImageButton botonSiguiente;
     private ImageButton BotonAnterior;
-    private String [] numColumnaYFila={"3x3","4x4","5x5","6x6"};
+    private String[] numColumnaYFila = {"3x3", "4x4", "5x5", "6x6"};
     private TextView verDimension;
 
-    private int numPosicion=0;
+    private int numPosicion = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        verDimension= (TextView)findViewById(R.id.verDimension);
+        verDimension = (TextView) findViewById(R.id.verDimension);
         verDimension.setText(numColumnaYFila[numPosicion]);
 
         botonComenzar = (Button) findViewById(R.id.comenzar);
         botonComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,Juego.class);
+                Intent intent = new Intent(MainActivity.this, Juego.class);
                 startActivity(intent);
             }
         });
@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (numPosicion == 0) {
-                    numPosicion=numColumnaYFila.length-1;
+                    numPosicion = numColumnaYFila.length - 1;
                     verDimension.setText(numColumnaYFila[numPosicion]);
-                }else {
-                    numPosicion=(numPosicion-1)%numColumnaYFila.length;
+                } else {
+                    numPosicion = (numPosicion - 1) % numColumnaYFila.length;
                     verDimension.setText(numColumnaYFila[numPosicion]);
                 }
             }
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         botonSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                numPosicion=(numPosicion+1)%numColumnaYFila.length;
+                numPosicion = (numPosicion + 1) % numColumnaYFila.length;
                 verDimension.setText(numColumnaYFila[numPosicion]);
 
             }

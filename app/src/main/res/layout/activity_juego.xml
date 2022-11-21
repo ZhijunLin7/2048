@@ -24,11 +24,11 @@
         android:id="@+id/linearLayout"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="10dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/Puntos"
@@ -37,14 +37,14 @@
             android:gravity="center"
             android:text="Puntos"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -52,11 +52,11 @@
         android:id="@+id/linearLayout2"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="10dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView2"
@@ -65,24 +65,24 @@
             android:gravity="center"
             android:text="Mejor"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
-   <!--Botones-->
+    <!--Botones superior-->
     <LinearLayout
         android:id="@+id/navSuperior"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_margin="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout">
@@ -104,23 +104,31 @@
 
     </LinearLayout>
 
-    <!--El juego-->
+    <!--El fondo de carta del juego-->
     <GridLayout
         android:id="@+id/Gridfondo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
-        android:columnCount="4"
-        android:rowCount="4"
         android:useDefaultMargins="true"
         app:layout_constraintBottom_toTopOf="@+id/navInferior"
-        app:layout_constraintTop_toBottomOf="@+id/navSuperior"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/navSuperior">
 
 
     </GridLayout>
+    <!--Donde estara los numeros del juego-->
+    <GridLayout
+        android:id="@+id/Gridjuego"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:useDefaultMargins="true"
+        app:layout_constraintBottom_toTopOf="@+id/navInferior"
+        app:layout_constraintTop_toBottomOf="@+id/navSuperior">
 
 
+    </GridLayout>
+    <!--Boton inferior-->
     <LinearLayout
         android:id="@+id/navInferior"
         android:layout_width="fill_parent"
