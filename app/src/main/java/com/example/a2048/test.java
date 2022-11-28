@@ -13,7 +13,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -24,11 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
 
-public class Juego extends AppCompatActivity {
+public class test extends AppCompatActivity {
 
     private GridLayout gridfondo;
     private GridLayout gridjuego;
@@ -38,7 +35,7 @@ public class Juego extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_juego);
+        setContentView(R.layout.activity_test);
 
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
 
@@ -67,23 +64,23 @@ public class Juego extends AppCompatActivity {
                 float diffX = e2.getX() - e1.getX();
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     if (diffX > 0) {
-                        Toast.makeText(Juego.this, "Derecha", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(test.this, "Derecha", Toast.LENGTH_SHORT).show();
                         moverDerecha(textViews, gridjuego);
                     }
                     else {
-                        Toast.makeText(Juego.this, "Izquierda", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(test.this, "Izquierda", Toast.LENGTH_SHORT).show();
                         moverIzquierda(textViews, gridjuego);
 
                     }
                 }
                 else {
                     if (diffY > 0) {
-                        Toast.makeText(Juego.this, "Abajo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(test.this, "Abajo", Toast.LENGTH_SHORT).show();
                         moverAbajo(textViews, gridjuego);
 
                     }
                     else {
-                        Toast.makeText(Juego.this, "Arriba", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(test.this, "Arriba", Toast.LENGTH_SHORT).show();
                         moverArriba(textViews, gridjuego);
 
                     }
@@ -125,7 +122,7 @@ public class Juego extends AppCompatActivity {
 
         textView2.setText("0");
         textView2.setGravity(Gravity.CENTER);
-        textView2.setTextSize(30);
+        textView2.setTextSize(24);
         textView2.setTypeface(Typeface.DEFAULT_BOLD);
 
         gridjuego.addView(textView2, layoutParams);
@@ -175,6 +172,7 @@ public class Juego extends AppCompatActivity {
         this.repintar(gridjuego);
     }
 
+
     //Pinta el color depende de numero
     public void repintar(GridLayout gridjuego) {
         for (int i = 0; i < gridjuego.getChildCount(); i++) {
@@ -185,9 +183,7 @@ public class Juego extends AppCompatActivity {
                 ((TextView) gridjuego.getChildAt(i)).setTextColor(Color.BLACK);
                 gridjuego.getChildAt(i).setVisibility(View.VISIBLE);
             }
-            if (Objects.equals(text, "0")) {
-                ((TextView) gridjuego.getChildAt(i)).setVisibility(View.INVISIBLE);
-            }
+
             if (Objects.equals(text, "2")) {
                 bgShape.setColor(ContextCompat.getColor(this, R.color.color2));
             }
@@ -251,7 +247,7 @@ public class Juego extends AppCompatActivity {
                             textViews[j][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
                             textViews[y1][i].setText("0");
                         }
-                        this.repintar(gridJuego);
+
                         break;
                     }
                 }
@@ -271,7 +267,7 @@ public class Juego extends AppCompatActivity {
                             textViews[j][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
                             textViews[y1][i].setText("0");
                         }
-                        this.repintar(gridJuego);
+
                         break;
                     }
                 }
@@ -284,14 +280,18 @@ public class Juego extends AppCompatActivity {
                 for (int y1 = j+1; y1 < 4; y1++) {
                     if (textViews[i][y1].getText()!="0") {
                         if (textViews[i][j].getText()=="0") {
+                            animacion(textViews[i][j],textViews[i][y1]);
+
                             textViews[i][j].setText(textViews[i][y1].getText());
                             textViews[i][y1].setText("0");
                             j--;
                         }else if (textViews[i][j].getText().equals(textViews[i][y1].getText())) {
+                            animacion(textViews[i][j],textViews[i][y1]);
+
                             textViews[i][j].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
                             textViews[i][y1].setText("0");
                         }
-                        this.repintar(gridJuego);
+
                         break;
                     }
                 }
@@ -311,17 +311,19 @@ public class Juego extends AppCompatActivity {
                             textViews[i][j].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
                             textViews[i][y1].setText("0");
                         }
-                        this.repintar(gridJuego);
+
                         break;
                     }
                 }
             }
         }
     }
+
     public void animacion(TextView fin,TextView mover){
         float x= fin.getX()-mover.getX();
 
         ObjectAnimator animation = ObjectAnimator.ofFloat(mover, "translationX", x);
+        animation.setDuration(2000);
         animation.start();
         animation.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -336,6 +338,8 @@ public class Juego extends AppCompatActivity {
         });
 
     }
+
+
     //Getter y Setters
     public GridLayout getGridfondo() {
         return gridfondo;

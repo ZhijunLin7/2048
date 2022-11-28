@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         botonComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Juego.class);
+                Intent intent = new Intent(MainActivity.this, test.class);
                 startActivity(intent);
             }
         });
