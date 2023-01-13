@@ -186,7 +186,7 @@ public class Juego extends AppCompatActivity {
                 gridjuego.getChildAt(i).setVisibility(View.VISIBLE);
             }
             if (Objects.equals(text, "0")) {
-                ((TextView) gridjuego.getChildAt(i)).setVisibility(View.INVISIBLE);
+
             }
             if (Objects.equals(text, "2")) {
                 bgShape.setColor(ContextCompat.getColor(this, R.color.color2));
@@ -244,14 +244,18 @@ public class Juego extends AppCompatActivity {
                 for (int y1 = j+1; y1 < 4; y1++) {
                     if (textViews[y1][i].getText()!="0") {
                         if (textViews[j][i].getText()=="0") {
+
                             textViews[j][i].setText(textViews[y1][i].getText());
                             textViews[y1][i].setText("0");
+
                             j--;
                         }else if (textViews[j][i].getText().equals(textViews[y1][i].getText())) {
+
                             textViews[j][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
                             textViews[y1][i].setText("0");
+
                         }
-                        this.repintar(gridJuego);
+
                         break;
                     }
                 }
@@ -284,10 +288,12 @@ public class Juego extends AppCompatActivity {
                 for (int y1 = j+1; y1 < 4; y1++) {
                     if (textViews[i][y1].getText()!="0") {
                         if (textViews[i][j].getText()=="0") {
+                            animacion(textViews[i][j],textViews[i][y1]);
                             textViews[i][j].setText(textViews[i][y1].getText());
                             textViews[i][y1].setText("0");
                             j--;
                         }else if (textViews[i][j].getText().equals(textViews[i][y1].getText())) {
+                            animacion(textViews[i][j],textViews[i][y1]);;
                             textViews[i][j].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
                             textViews[i][y1].setText("0");
                         }
@@ -322,7 +328,7 @@ public class Juego extends AppCompatActivity {
         float x= fin.getX()-mover.getX();
 
         ObjectAnimator animation = ObjectAnimator.ofFloat(mover, "translationX", x);
-        animation.start();
+
         animation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -334,6 +340,7 @@ public class Juego extends AppCompatActivity {
             }
 
         });
+        animation.start();
 
     }
     //Getter y Setters

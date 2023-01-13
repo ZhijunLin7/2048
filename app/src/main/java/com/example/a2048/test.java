@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -39,8 +40,8 @@ public class test extends AppCompatActivity {
 
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
 
-        gridfondo = (GridLayout) findViewById(R.id.Gridfondo);
-        gridjuego = (GridLayout) findViewById(R.id.Gridjuego);
+        gridfondo =findViewById(R.id.Gridfondo);
+        gridjuego =findViewById(R.id.Gridjuego);
         this.configurarGrid(gridfondo, gridjuego, 4);
 
         textViews = new TextView[4][4];
@@ -65,24 +66,21 @@ public class test extends AppCompatActivity {
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     if (diffX > 0) {
                         Toast.makeText(test.this, "Derecha", Toast.LENGTH_SHORT).show();
-                        moverDerecha(textViews, gridjuego);
+                        moverDerecha(textViews);
                     }
                     else {
                         Toast.makeText(test.this, "Izquierda", Toast.LENGTH_SHORT).show();
-                        moverIzquierda(textViews, gridjuego);
-
+                        moverIzquierda(textViews);
                     }
                 }
                 else {
                     if (diffY > 0) {
                         Toast.makeText(test.this, "Abajo", Toast.LENGTH_SHORT).show();
-                        moverAbajo(textViews, gridjuego);
-
+                        moverAbajo(textViews);
                     }
                     else {
                         Toast.makeText(test.this, "Arriba", Toast.LENGTH_SHORT).show();
-                        moverArriba(textViews, gridjuego);
-
+                        moverArriba(textViews);
                     }
                 }
                 añadirNumRandom(gridjuego);
@@ -92,7 +90,6 @@ public class test extends AppCompatActivity {
             }
             return super.onFling(e1, e2, velocityX, velocityY);
         }
-
     }
 
     @Override
@@ -169,7 +166,8 @@ public class test extends AppCompatActivity {
         {
             textViews.get(textviewAleatorio).setText("2");
         }
-        this.repintar(gridjuego);
+        this.repintar(getGridjuego());
+
     }
 
 
@@ -183,7 +181,9 @@ public class test extends AppCompatActivity {
                 ((TextView) gridjuego.getChildAt(i)).setTextColor(Color.BLACK);
                 gridjuego.getChildAt(i).setVisibility(View.VISIBLE);
             }
-
+            if (Objects.equals(text, "0")) {
+                ((TextView) gridjuego.getChildAt(i)).setVisibility(View.INVISIBLE);
+            }
             if (Objects.equals(text, "2")) {
                 bgShape.setColor(ContextCompat.getColor(this, R.color.color2));
             }
@@ -234,27 +234,36 @@ public class test extends AppCompatActivity {
     }
 //----------------------------------------------------------------------------------------------
 
-    public void moverArriba(TextView[][] textViews, GridLayout gridJuego) {
+    public void moverArriba(TextView[][] textViews) {
         for (int i = 0; i < textViews.length; i++) {
-            for (int j = 0; j < textViews[i].length; j++) {
-                for (int y1 = j+1; y1 < 4; y1++) {
-                    if (textViews[y1][i].getText()!="0") {
-                        if (textViews[j][i].getText()=="0") {
-                            textViews[j][i].setText(textViews[y1][i].getText());
-                            textViews[y1][i].setText("0");
-                            j--;
-                        }else if (textViews[j][i].getText().equals(textViews[y1][i].getText())) {
-                            textViews[j][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
-                            textViews[y1][i].setText("0");
+            boolean juntar= true;
+            for (int j = 1; j < textViews[i].length; j++) {
+                if (textViews[j][i].getText()!="0") {
+                    for (int y = j-1; y > -1; y--) {
+                        if (textViews[y][i].getText()!="0" ) {
+                            if (textViews[y][i].getText().equals(textViews[j][i].getText()) && juntar) {
+                                textViews[y][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
+                                textViews[j][i].setText("0");
+                                juntar=false;
+                            }else{
+                                String num = (String) textViews[j][i].getText();
+                                textViews[j][i].setText("0");
+                                textViews[y+1][i].setText(num);
+                                juntar= true;
+                            }
+                            break;
                         }
-
-                        break;
+                        if (y == 0) {
+                            textViews[y][i].setText(textViews[j][i].getText());
+                            textViews[j][i].setText("0");
+                        }
                     }
                 }
             }
         }
     }
-    public void moverAbajo(TextView[][] textViews, GridLayout gridJuego) {
+
+    public void moverAbajo(TextView[][] textViews) {
         for (int i = 0; i < textViews.length; i++) {
             for (int j = textViews[i].length-1; j >=0 ; j--) {
                 for (int y1 = j-1; y1 >=0; y1--) {
@@ -274,20 +283,16 @@ public class test extends AppCompatActivity {
             }
         }
     }
-    public void moverIzquierda(TextView[][] textViews, GridLayout gridJuego) {
+    public void moverIzquierda(TextView[][] textViews) {
         for (int i = 0; i < textViews.length; i++) {
             for (int j = 0; j < textViews[i].length; j++) {
                 for (int y1 = j+1; y1 < 4; y1++) {
                     if (textViews[i][y1].getText()!="0") {
                         if (textViews[i][j].getText()=="0") {
-                            animacion(textViews[i][j],textViews[i][y1]);
-
                             textViews[i][j].setText(textViews[i][y1].getText());
                             textViews[i][y1].setText("0");
                             j--;
                         }else if (textViews[i][j].getText().equals(textViews[i][y1].getText())) {
-                            animacion(textViews[i][j],textViews[i][y1]);
-
                             textViews[i][j].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
                             textViews[i][y1].setText("0");
                         }
@@ -298,7 +303,7 @@ public class test extends AppCompatActivity {
             }
         }
     }
-    public void moverDerecha(TextView[][] textViews, GridLayout gridJuego) {
+    public void moverDerecha(TextView[][] textViews) {
         for (int i = 0; i < textViews.length; i++) {
             for (int j = textViews[i].length-1; j >=0 ; j--) {
                 for (int y1 = j-1; y1 >=0; y1--) {
@@ -318,7 +323,6 @@ public class test extends AppCompatActivity {
             }
         }
     }
-
     public void animacion(TextView fin,TextView mover){
         float x= fin.getX()-mover.getX();
 
@@ -332,14 +336,20 @@ public class test extends AppCompatActivity {
                 animation = ObjectAnimator.ofFloat(mover, "translationX", 0);
                 animation.setDuration(0);
                 animation.start();
+                animation.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        añadirNumRandom(getGridjuego());
+
+                    }
+                });
 
             }
 
         });
 
     }
-
-
     //Getter y Setters
     public GridLayout getGridfondo() {
         return gridfondo;
