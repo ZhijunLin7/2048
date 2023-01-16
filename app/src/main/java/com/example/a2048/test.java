@@ -49,8 +49,7 @@ public class test extends AppCompatActivity {
 
         this.añadirNumRandom(gridjuego);
         this.añadirNumRandom(gridjuego);
-
-
+        this.repintar(getGridjuego());
 
     }
 
@@ -83,7 +82,7 @@ public class test extends AppCompatActivity {
                         moverArriba(textViews);
                     }
                 }
-                añadirNumRandom(gridjuego);
+                añadirNumRandom(getGridjuego());
             }
             catch (Exception exception) {
                 exception.printStackTrace();
@@ -156,17 +155,17 @@ public class test extends AppCompatActivity {
                 textViews.add((TextView) gridjuego.getChildAt(i));
             }
         }
-
+        Log.d("test", "añadirNumRandom: paso");
         int textviewAleatorio = (int) (Math.random() * textViews.size());
         int numeroAleatorio = (int) (Math.random() * 5);
 
         if (numeroAleatorio == 1) {
             textViews.get(textviewAleatorio).setText("4");
-        }
+        }else
         {
             textViews.get(textviewAleatorio).setText("2");
         }
-        this.repintar(getGridjuego());
+
 
     }
 
@@ -182,7 +181,7 @@ public class test extends AppCompatActivity {
                 gridjuego.getChildAt(i).setVisibility(View.VISIBLE);
             }
             if (Objects.equals(text, "0")) {
-                ((TextView) gridjuego.getChildAt(i)).setVisibility(View.INVISIBLE);
+                (gridjuego.getChildAt(i)).setVisibility(View.INVISIBLE);
             }
             if (Objects.equals(text, "2")) {
                 bgShape.setColor(ContextCompat.getColor(this, R.color.color2));
@@ -239,7 +238,7 @@ public class test extends AppCompatActivity {
             boolean juntar= true;
             for (int j = 1; j < textViews[i].length; j++) {
                 if (textViews[j][i].getText()!="0") {
-                    for (int y = j-1; y > -1; y--) {
+                    for (int y = j-1; y >= 0; y--) {
                         if (textViews[y][i].getText()!="0" ) {
                             if (textViews[y][i].getText().equals(textViews[j][i].getText()) && juntar) {
                                 textViews[y][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
@@ -265,19 +264,27 @@ public class test extends AppCompatActivity {
 
     public void moverAbajo(TextView[][] textViews) {
         for (int i = 0; i < textViews.length; i++) {
-            for (int j = textViews[i].length-1; j >=0 ; j--) {
-                for (int y1 = j-1; y1 >=0; y1--) {
-                    if (textViews[y1][i].getText()!="0") {
-                        if (textViews[j][i].getText()=="0") {
-                            textViews[j][i].setText(textViews[y1][i].getText());
-                            textViews[y1][i].setText("0");
-                            j++;
-                        }else if (textViews[j][i].getText().equals(textViews[y1][i].getText())) {
-                            textViews[j][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
-                            textViews[y1][i].setText("0");
+            boolean juntar= true;
+            for (int j = textViews[i].length-2; j >=0 ; j--) {
+                if (textViews[j][i].getText()!="0") {
+                    for (int y = j+1; y < textViews[i].length; y++) {
+                        if (textViews[y][i].getText()!="0" ) {
+                            if (textViews[y][i].getText().equals(textViews[j][i].getText()) && juntar) {
+                                textViews[y][i].setText(String.valueOf((Integer.parseInt((String) textViews[j][i].getText()) * 2)));
+                                textViews[j][i].setText("0");
+                                juntar=false;
+                            }else{
+                                String num = (String) textViews[j][i].getText();
+                                textViews[j][i].setText("0");
+                                textViews[y-1][i].setText(num);
+                                juntar= true;
+                            }
+                            break;
                         }
-
-                        break;
+                        if (y == textViews[i].length-1) {
+                            textViews[y][i].setText(textViews[j][i].getText());
+                            textViews[j][i].setText("0");
+                        }
                     }
                 }
             }
@@ -285,19 +292,30 @@ public class test extends AppCompatActivity {
     }
     public void moverIzquierda(TextView[][] textViews) {
         for (int i = 0; i < textViews.length; i++) {
-            for (int j = 0; j < textViews[i].length; j++) {
-                for (int y1 = j+1; y1 < 4; y1++) {
-                    if (textViews[i][y1].getText()!="0") {
-                        if (textViews[i][j].getText()=="0") {
-                            textViews[i][j].setText(textViews[i][y1].getText());
-                            textViews[i][y1].setText("0");
-                            j--;
-                        }else if (textViews[i][j].getText().equals(textViews[i][y1].getText())) {
-                            textViews[i][j].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
-                            textViews[i][y1].setText("0");
+            boolean juntar= true;
+            for (int j = 1; j < textViews[i].length; j++) {
+                if (textViews[i][j].getText()!="0") {
+                    for (int y = j-1; y >= 0; y--) {
+                        if (textViews[i][y].getText()!="0" ) {
+                            if (textViews[i][y].getText().equals(textViews[i][j].getText()) && juntar) {
+                                animacion(textViews[i][y],textViews[i][j]);
+                                textViews[i][y].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
+                                textViews[i][j].setText("0");
+                                juntar=false;
+                            }else{
+                                animacion(textViews[i][y+1],textViews[i][j]);
+                                String num = (String) textViews[i][j].getText();
+                                textViews[i][j].setText("0");
+                                textViews[i][y+1].setText(num);
+                                juntar= true;
+                            }
+                            break;
                         }
-
-                        break;
+                        if (y == 0) {
+                            animacion(textViews[i][y],textViews[i][j]);
+                            textViews[i][y].setText(textViews[i][j].getText());
+                            textViews[i][j].setText("0");
+                        }
                     }
                 }
             }
@@ -305,19 +323,27 @@ public class test extends AppCompatActivity {
     }
     public void moverDerecha(TextView[][] textViews) {
         for (int i = 0; i < textViews.length; i++) {
-            for (int j = textViews[i].length-1; j >=0 ; j--) {
-                for (int y1 = j-1; y1 >=0; y1--) {
-                    if (textViews[i][y1].getText()!="0") {
-                        if (textViews[i][j].getText()=="0") {
-                            textViews[i][j].setText(textViews[i][y1].getText());
-                            textViews[i][y1].setText("0");
-                            j++;
-                        }else if (textViews[i][j].getText().equals(textViews[i][y1].getText())) {
-                            textViews[i][j].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
-                            textViews[i][y1].setText("0");
+            boolean juntar= true;
+            for (int j = textViews[i].length-2; j >=0 ; j--) {
+                if (textViews[i][j].getText()!="0") {
+                    for (int y = j+1; y < textViews[i].length; y++) {
+                        if (textViews[i][y].getText()!="0" ) {
+                            if (textViews[i][y].getText().equals(textViews[i][j].getText()) && juntar) {
+                                textViews[i][y].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
+                                textViews[i][j].setText("0");
+                                juntar=false;
+                            }else{
+                                String num = (String) textViews[i][j].getText();
+                                textViews[i][j].setText("0");
+                                textViews[i][y-1].setText(num);
+                                juntar= true;
+                            }
+                            break;
                         }
-
-                        break;
+                        if (y == textViews[i].length-1) {
+                            textViews[i][y].setText(textViews[i][j].getText());
+                            textViews[i][j].setText("0");
+                        }
                     }
                 }
             }
@@ -327,28 +353,18 @@ public class test extends AppCompatActivity {
         float x= fin.getX()-mover.getX();
 
         ObjectAnimator animation = ObjectAnimator.ofFloat(mover, "translationX", x);
-        animation.setDuration(2000);
-        animation.start();
+        animation.setDuration(200);
         animation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                animation = ObjectAnimator.ofFloat(mover, "translationX", 0);
-                animation.setDuration(0);
-                animation.start();
-                animation.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        añadirNumRandom(getGridjuego());
-
-                    }
-                });
-
+                //Aqui debe ir el cambair de posicion y sumar
+                ObjectAnimator animation2 = ObjectAnimator.ofFloat(mover, "translationX", 0);
+                animation2.setDuration(0);
+                animation2.start();
+                repintar(getGridjuego());
             }
-
         });
-
+        animation.start();
     }
     //Getter y Setters
     public GridLayout getGridfondo() {
@@ -371,9 +387,7 @@ public class test extends AppCompatActivity {
         return gestureDetector;
     }
 
-    public void setGestureDetector(GestureDetectorCompat gestureDetector) {
-        this.gestureDetector = gestureDetector;
-    }
+    public void setGestureDetector(GestureDetectorCompat gestureDetector) {this.gestureDetector = gestureDetector;}
 
     public TextView[][] getTextViews() {
         return textViews;
