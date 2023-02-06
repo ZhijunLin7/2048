@@ -288,12 +288,12 @@ public class Juego extends AppCompatActivity {
                 for (int y1 = j+1; y1 < 4; y1++) {
                     if (textViews[i][y1].getText()!="0") {
                         if (textViews[i][j].getText()=="0") {
-                            animacion(textViews[i][j],textViews[i][y1]);
+
                             textViews[i][j].setText(textViews[i][y1].getText());
                             textViews[i][y1].setText("0");
                             j--;
                         }else if (textViews[i][j].getText().equals(textViews[i][y1].getText())) {
-                            animacion(textViews[i][j],textViews[i][y1]);;
+
                             textViews[i][j].setText(String.valueOf((Integer.parseInt((String) textViews[i][j].getText()) * 2)));
                             textViews[i][y1].setText("0");
                         }
