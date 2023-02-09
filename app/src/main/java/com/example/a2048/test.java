@@ -47,15 +47,15 @@ public class test extends AppCompatActivity {
         gridjuego = findViewById(R.id.Gridjuego);
         this.configurarGrid(gridfondo, gridjuego, 4);
 
-        puntos= findViewById(R.id.Puntos);
-        maxPuntos= findViewById(R.id.MaxPuntos);
+        puntos = findViewById(R.id.Puntos);
+        maxPuntos = findViewById(R.id.MaxPuntos);
 
         numTextViews = new int[4][4];
         textViews = new TextView[4][4];
-        this.crear2dArray(gridjuego);
+        this.crear2dArray(gridjuego, 4);
 
-        this.añadirNumRandom();
-        this.añadirNumRandom();
+        this.anadirNumRandom();
+        this.anadirNumRandom();
 
         for (TextView[] textView : textViews) {
             for (int j = 0; j < textView.length; j++) {
@@ -131,7 +131,7 @@ public class test extends AppCompatActivity {
         textView2.setGravity(Gravity.CENTER);
         textView2.setTextSize(24);
         textView2.setTypeface(Typeface.DEFAULT_BOLD);
-
+        textView2.setTextColor(Color.BLACK);
 
         gridjuego.addView(textView2, layoutParams);
     }
@@ -160,7 +160,7 @@ public class test extends AppCompatActivity {
     }
 
     //Busca los textiew que esta vacio "0" , lo mete en array y mete numero un 2 o 4 a los vacios
-    public void añadirNumRandom() {
+    public void anadirNumRandom() {
 
         //Ver si el posicion es cero y lo guarda el i y j en un arraylist;
         ArrayList<Integer> numI = new ArrayList();
@@ -198,51 +198,51 @@ public class test extends AppCompatActivity {
         GradientDrawable bgShape = (GradientDrawable) textView.getBackground();
 
         if (!Objects.equals(text, "0")) {
-            textView.setTextColor(Color.BLACK);
             textView.setVisibility(View.VISIBLE);
         }
         if (Objects.equals(text, "0")) {
             textView.setVisibility(View.INVISIBLE);
         }
-        if (Objects.equals(text, "2")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color2));
+
+        switch (text) {
+            case "2":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color2));
+                break;
+            case "4":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color4));
+                break;
+            case "8":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color8));
+                break;
+            case "16":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color16));
+                break;
+            case "32":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color32));
+                break;
+            case "64":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color64));
+                break;
+            case "128":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color128));
+                break;
+            case "256":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color256));
+                break;
+            case "1024":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color1024));
+                break;
+            case "2048":
+                bgShape.setColor(ContextCompat.getColor(this, R.color.color2048));
+                break;
         }
-        if (Objects.equals(text, "4")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color4));
-        }
-        if (Objects.equals(text, "8")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color8));
-        }
-        if (Objects.equals(text, "16")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color16));
-        }
-        if (Objects.equals(text, "32")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color32));
-        }
-        if (Objects.equals(text, "64")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color64));
-        }
-        if (Objects.equals(text, "128")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color128));
-        }
-        if (Objects.equals(text, "256")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color256));
-        }
-        if (Objects.equals(text, "512")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color512));
-        }
-        if (Objects.equals(text, "1024")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color1024));
-        }
-        if (Objects.equals(text, "2048")) {
-            bgShape.setColor(ContextCompat.getColor(this, R.color.color2048));
-        }
+
     }
 
-    public void crear2dArray(GridLayout gridJuego) {
+    public void crear2dArray(GridLayout gridJuego, int numColumnaFila) {
         int k = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < numColumnaFila; i++) {
+            for (int j = 0; j < numColumnaFila; j++) {
                 textViews[i][j] = (TextView) gridJuego.getChildAt(k);
                 k++;
             }
@@ -258,16 +258,16 @@ public class test extends AppCompatActivity {
                     for (int y = j - 1; y >= 0; y--) {
                         if (numTextViews[y][i] != 0) {
                             if (numTextViews[y][i] == numTextViews[j][i] && juntar) {
-                                this.juntar(y, i, j, i, false,true);
+                                this.juntar(y, i, j, i, false, true);
                                 juntar = false;
                             } else if (y + 1 != j) {
-                                this.mover(y + 1, i, j, i, false,false);
+                                this.mover(y + 1, i, j, i, false, false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == 0) {
-                            this.mover(y, i, j, i, false,false);
+                            this.mover(y, i, j, i, false, false);
                         }
                     }
                 }
@@ -283,16 +283,16 @@ public class test extends AppCompatActivity {
                     for (int y = j + 1; y < numTextViews[i].length; y++) {
                         if (numTextViews[y][i] != 0) {
                             if (numTextViews[y][i] == numTextViews[j][i] && juntar) {
-                                this.juntar(y, i, j, i, false,true);
+                                this.juntar(y, i, j, i, false, true);
                                 juntar = false;
                             } else if (y - 1 != j) {
-                                this.mover(y - 1, i, j, i, false,false);
+                                this.mover(y - 1, i, j, i, false, false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == numTextViews[i].length - 1) {
-                            this.mover(y, i, j, i, false,false);
+                            this.mover(y, i, j, i, false, false);
                         }
                     }
                 }
@@ -308,16 +308,16 @@ public class test extends AppCompatActivity {
                     for (int y = j - 1; y >= 0; y--) {
                         if (numTextViews[i][y] != 0) {
                             if (numTextViews[i][y] == numTextViews[i][j] && juntar) {
-                                this.juntar(i, y, i, j, true,true);
+                                this.juntar(i, y, i, j, true, true);
                                 juntar = false;
                             } else if (y + 1 != j) {
-                                this.mover(i, y + 1, i, j, true,false);
+                                this.mover(i, y + 1, i, j, true, false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == 0) {
-                            this.mover(i, y, i, j, true,false);
+                            this.mover(i, y, i, j, true, false);
                         }
                     }
                 }
@@ -333,16 +333,16 @@ public class test extends AppCompatActivity {
                     for (int y = j + 1; y < numTextViews[i].length; y++) {
                         if (numTextViews[i][y] != 0) {
                             if (numTextViews[i][y] == numTextViews[i][j] && juntar) {
-                                this.juntar(i, y, i, j, true,true);
+                                this.juntar(i, y, i, j, true, true);
                                 juntar = false;
                             } else if (y - 1 != j) {
-                                this.mover(i, y - 1, i, j, true,false);
+                                this.mover(i, y - 1, i, j, true, false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == numTextViews[i].length - 1) {
-                            this.mover(i, y, i, j, true,false);
+                            this.mover(i, y, i, j, true, false);
                         }
                     }
                 }
@@ -350,7 +350,7 @@ public class test extends AppCompatActivity {
         }
     }
 
-    public void animacionMover(TextView fin, TextView mover, int numFinal, int numImover, int numJmover, boolean horizontal,boolean juntar) {
+    public void animacionMover(TextView fin, TextView mover, int numFinal, int numImover, int numJmover, boolean horizontal, boolean juntar) {
         float distancia;
         String direccion;
         // Hace calculo depende de direccion y incica al animacion que direccion hay que mover
@@ -394,42 +394,42 @@ public class test extends AppCompatActivity {
 
                 // Activa una vez para añadir un numero luego de acabar de mover
                 if (!activado) {
-                    añadirNumRandom();
+                    anadirNumRandom();
                     activado = true;
                 }
-
             }
         });
         animation.start();
     }
 
-    public void animacionScale(TextView fin){
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1f,1.2f,1f,1.2f,100,100);
+    public void animacionScale(TextView fin) {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 1.2f, 1f, 1.2f, 100, 100);
         scaleAnimation.setDuration(100);
         fin.startAnimation(scaleAnimation);
     }
 
     // Junatar los numeros
-    public void juntar(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal,boolean juntar) {
+    public void juntar(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal, boolean juntar) {
         this.numTextViews[numIfin][numJfin] = numTextViews[numImover][numJmover] * 2;
         this.numTextViews[numImover][numJmover] = 0;
 
         // Al juntar anade puntos
-        int puntosTotal= Integer.parseInt(this.puntos.getText().toString()) + this.numTextViews[numIfin][numJfin];
+        int puntosTotal = Integer.parseInt(this.puntos.getText().toString()) + this.numTextViews[numIfin][numJfin];
         this.puntos.setText(String.valueOf(puntosTotal));
 
+        // Lanza la animacion de mover
         this.animacionMover(textViews[numIfin][numJfin], textViews[numImover][numJmover],
-                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal,juntar);
+                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal, juntar);
     }
 
     //Hace mover los numeros
-    public void mover(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal,boolean juntar) {
+    public void mover(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal, boolean juntar) {
         int num = numTextViews[numImover][numJmover];
         this.numTextViews[numImover][numJmover] = 0;
         this.numTextViews[numIfin][numJfin] = num;
-
+        // Lanza la animacion de mover
         this.animacionMover(textViews[numIfin][numJfin], textViews[numImover][numJmover],
-                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal,juntar);
+                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal, juntar);
     }
 
     //Getter y Setters

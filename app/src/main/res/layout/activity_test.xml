@@ -93,20 +93,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Boton" />
-
-        <Button
+            android:src="@drawable/img_home"
+            android:layout_weight="1"/>
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Boton" />
-
-        <Button
+            android:src="@drawable/img_undo"
+            android:layout_weight="3"/>
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Boton" />
+            android:src="@drawable/img_restart"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
