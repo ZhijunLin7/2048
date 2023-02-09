@@ -25,26 +25,29 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="10dp"
+        android:background="@drawable/carta2048"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/Puntos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Puntos"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <TextView
+            android:id="@+id/Puntos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 
@@ -53,26 +56,29 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="10dp"
+        android:background="@drawable/carta2048"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Mejor"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
         <TextView
+            android:id="@+id/MaxPuntos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
     <!--Botones superior-->
@@ -111,11 +117,8 @@
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:useDefaultMargins="true"
-        app:layout_constraintBottom_toTopOf="@+id/navInferior"
-        app:layout_constraintTop_toBottomOf="@+id/navSuperior">
+        app:layout_constraintTop_toBottomOf="@+id/navSuperior" />
 
-
-    </GridLayout>
     <!--Donde estara los numeros del juego-->
     <GridLayout
         android:id="@+id/Gridjuego"
@@ -123,11 +126,7 @@
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:useDefaultMargins="true"
-        app:layout_constraintBottom_toTopOf="@+id/navInferior"
-        app:layout_constraintTop_toBottomOf="@+id/navSuperior">
-
-
-    </GridLayout>
+        app:layout_constraintTop_toBottomOf="@+id/navSuperior" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

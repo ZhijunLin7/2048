@@ -13,17 +13,16 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class test extends AppCompatActivity {
@@ -33,6 +32,8 @@ public class test extends AppCompatActivity {
     private GestureDetectorCompat gestureDetector;
     private TextView[][] textViews;
     private int[][] numTextViews;
+    private TextView puntos;
+    private TextView maxPuntos;
     boolean activado;
 
     @Override
@@ -45,6 +46,9 @@ public class test extends AppCompatActivity {
         gridfondo = findViewById(R.id.Gridfondo);
         gridjuego = findViewById(R.id.Gridjuego);
         this.configurarGrid(gridfondo, gridjuego, 4);
+
+        puntos= findViewById(R.id.Puntos);
+        maxPuntos= findViewById(R.id.MaxPuntos);
 
         numTextViews = new int[4][4];
         textViews = new TextView[4][4];
@@ -161,6 +165,7 @@ public class test extends AppCompatActivity {
         //Ver si el posicion es cero y lo guarda el i y j en un arraylist;
         ArrayList<Integer> numI = new ArrayList();
         ArrayList<Integer> numJ = new ArrayList();
+
         for (int i = 0; i < this.numTextViews.length; i++) {
             for (int j = 0; j < this.numTextViews[i].length; j++) {
                 if (this.numTextViews[i][j] == 0) {
@@ -184,8 +189,7 @@ public class test extends AppCompatActivity {
             this.repintar(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
         }
 
-        Log.d("test", "activado");
-        Log.d("test", Arrays.deepToString(numTextViews));
+        this.animacionScale(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
     }
 
     //Pinta el color depende de numero
@@ -254,16 +258,16 @@ public class test extends AppCompatActivity {
                     for (int y = j - 1; y >= 0; y--) {
                         if (numTextViews[y][i] != 0) {
                             if (numTextViews[y][i] == numTextViews[j][i] && juntar) {
-                                this.juntar(y, i, j, i, false);
+                                this.juntar(y, i, j, i, false,true);
                                 juntar = false;
                             } else if (y + 1 != j) {
-                                this.mover(y + 1, i, j, i, false);
+                                this.mover(y + 1, i, j, i, false,false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == 0) {
-                            this.mover(y, i, j, i, false);
+                            this.mover(y, i, j, i, false,false);
                         }
                     }
                 }
@@ -279,16 +283,16 @@ public class test extends AppCompatActivity {
                     for (int y = j + 1; y < numTextViews[i].length; y++) {
                         if (numTextViews[y][i] != 0) {
                             if (numTextViews[y][i] == numTextViews[j][i] && juntar) {
-                                this.juntar(y, i, j, i, false);
+                                this.juntar(y, i, j, i, false,true);
                                 juntar = false;
                             } else if (y - 1 != j) {
-                                this.mover(y - 1, i, j, i, false);
+                                this.mover(y - 1, i, j, i, false,false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == numTextViews[i].length - 1) {
-                            this.mover(y, i, j, i, false);
+                            this.mover(y, i, j, i, false,false);
                         }
                     }
                 }
@@ -304,16 +308,16 @@ public class test extends AppCompatActivity {
                     for (int y = j - 1; y >= 0; y--) {
                         if (numTextViews[i][y] != 0) {
                             if (numTextViews[i][y] == numTextViews[i][j] && juntar) {
-                                this.juntar(i, y, i, j, true);
+                                this.juntar(i, y, i, j, true,true);
                                 juntar = false;
                             } else if (y + 1 != j) {
-                                this.mover(i, y + 1, i, j, true);
+                                this.mover(i, y + 1, i, j, true,false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == 0) {
-                            this.mover(i, y, i, j, true);
+                            this.mover(i, y, i, j, true,false);
                         }
                     }
                 }
@@ -329,16 +333,16 @@ public class test extends AppCompatActivity {
                     for (int y = j + 1; y < numTextViews[i].length; y++) {
                         if (numTextViews[i][y] != 0) {
                             if (numTextViews[i][y] == numTextViews[i][j] && juntar) {
-                                this.juntar(i, y, i, j, true);
+                                this.juntar(i, y, i, j, true,true);
                                 juntar = false;
                             } else if (y - 1 != j) {
-                                this.mover(i, y - 1, i, j, true);
+                                this.mover(i, y - 1, i, j, true,false);
                                 juntar = true;
                             }
                             break;
                         }
                         if (y == numTextViews[i].length - 1) {
-                            this.mover(i, y, i, j, true);
+                            this.mover(i, y, i, j, true,false);
                         }
                     }
                 }
@@ -346,7 +350,7 @@ public class test extends AppCompatActivity {
         }
     }
 
-    public void animacionMover(TextView fin, TextView mover, int numFinal, int numImover, int numJmover, boolean horizontal) {
+    public void animacionMover(TextView fin, TextView mover, int numFinal, int numImover, int numJmover, boolean horizontal,boolean juntar) {
         float distancia;
         String direccion;
         // Hace calculo depende de direccion y incica al animacion que direccion hay que mover
@@ -360,7 +364,7 @@ public class test extends AppCompatActivity {
 
         // Dedino la animacion
         ObjectAnimator animation = ObjectAnimator.ofFloat(mover, direccion, distancia);
-        animation.setDuration(200);
+        animation.setDuration(100);
 
         ObjectAnimator animation2 = ObjectAnimator.ofFloat(mover, direccion, 0);
         animation2.setDuration(0);
@@ -380,6 +384,12 @@ public class test extends AppCompatActivity {
                 repintar(fin);
                 repintar(mover);
 
+                //Hace la animacion de juntar
+                if (juntar) {
+                    animacionScale(fin);
+                }
+
+                // Hace que el mover vuelve a su lugar
                 animation2.start();
 
                 // Activa una vez para añadir un numero luego de acabar de mover
@@ -393,23 +403,33 @@ public class test extends AppCompatActivity {
         animation.start();
     }
 
+    public void animacionScale(TextView fin){
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f,1.2f,1f,1.2f,100,100);
+        scaleAnimation.setDuration(100);
+        fin.startAnimation(scaleAnimation);
+    }
+
     // Junatar los numeros
-    public void juntar(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal) {
+    public void juntar(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal,boolean juntar) {
         this.numTextViews[numIfin][numJfin] = numTextViews[numImover][numJmover] * 2;
         this.numTextViews[numImover][numJmover] = 0;
 
+        // Al juntar anade puntos
+        int puntosTotal= Integer.parseInt(this.puntos.getText().toString()) + this.numTextViews[numIfin][numJfin];
+        this.puntos.setText(String.valueOf(puntosTotal));
+
         this.animacionMover(textViews[numIfin][numJfin], textViews[numImover][numJmover],
-                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal);
+                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal,juntar);
     }
 
     //Hace mover los numeros
-    public void mover(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal) {
+    public void mover(int numIfin, int numJfin, int numImover, int numJmover, boolean horizontal,boolean juntar) {
         int num = numTextViews[numImover][numJmover];
         this.numTextViews[numImover][numJmover] = 0;
         this.numTextViews[numIfin][numJfin] = num;
 
         this.animacionMover(textViews[numIfin][numJfin], textViews[numImover][numJmover],
-                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal);
+                this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal,juntar);
     }
 
     //Getter y Setters
