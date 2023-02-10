@@ -13,7 +13,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -21,12 +20,10 @@ import android.view.View;
 import android.view.animation.ScaleAnimation;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.a2048.databinding.ActivityTestBinding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class test extends AppCompatActivity {
@@ -43,6 +40,7 @@ public class test extends AppCompatActivity {
     private int[][] pasoPrevio;
     private String puntoPrevio;
     boolean activado;
+    boolean siguienteMovimiento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +73,7 @@ public class test extends AppCompatActivity {
                 newGame();
             }
         });
-
+        siguienteMovimiento =true;
         this.newGame();
 
     }
@@ -88,7 +86,6 @@ public class test extends AppCompatActivity {
         this.numTextViews = new int[4][4];
         for (TextView[] textView : textViews) {
             for (TextView view : textView) {
-                view.setText("0");
                 view.setVisibility(View.INVISIBLE);
             }
         }
@@ -120,17 +117,19 @@ public class test extends AppCompatActivity {
             try {
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (diffX > 0) {
-                        moverDerecha(numTextViews);
+                if (siguienteMovimiento) {
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (diffX > 0) {
+                            moverDerecha(numTextViews);
+                        } else {
+                            moverIzquierda(numTextViews);
+                        }
                     } else {
-                        moverIzquierda(numTextViews);
-                    }
-                } else {
-                    if (diffY > 0) {
-                        moverAbajo(numTextViews);
-                    } else {
-                        moverArriba(numTextViews);
+                        if (diffY > 0) {
+                            moverAbajo(numTextViews);
+                        } else {
+                            moverArriba(numTextViews);
+                        }
                     }
                 }
             } catch (Exception exception) {
@@ -402,6 +401,8 @@ public class test extends AppCompatActivity {
     }
 
     public void animacionMover(TextView fin, TextView mover, int numFinal, int numImover, int numJmover, boolean horizontal, boolean juntar) {
+        siguienteMovimiento =false;
+
         float distancia;
         String direccion;
         // Hace calculo depende de direccion y incica al animacion que direccion hay que mover
@@ -415,7 +416,7 @@ public class test extends AppCompatActivity {
 
         // Dedino la animacion
         ObjectAnimator animation = ObjectAnimator.ofFloat(mover, direccion, distancia);
-        animation.setDuration(200);
+        animation.setDuration(100);
 
         ObjectAnimator animation2 = ObjectAnimator.ofFloat(mover, direccion, 0);
         animation2.setDuration(0);
@@ -447,6 +448,7 @@ public class test extends AppCompatActivity {
                 if (!activado) {
                     anadirNumRandom();
                     activado = true;
+                    siguienteMovimiento =true;
                 }
             }
         });
