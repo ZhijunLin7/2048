@@ -94,16 +94,19 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayout">
 
         <ImageButton
+            android:id="@+id/home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/img_home"
             android:layout_weight="1"/>
         <ImageButton
+            android:id="@+id/undo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/img_undo"
             android:layout_weight="3"/>
         <ImageButton
+            android:id="@+id/newgame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/img_restart"

@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -22,74 +23,113 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a2048.databinding.ActivityTestBinding;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class test extends AppCompatActivity {
 
+    private ActivityTestBinding binding;
     private GridLayout gridfondo;
     private GridLayout gridjuego;
     private GestureDetectorCompat gestureDetector;
+
     private TextView[][] textViews;
     private int[][] numTextViews;
-    private TextView puntos;
-    private TextView maxPuntos;
+    private TextView puntosTextview;
+    private TextView maxPuntosTextview;
+    private int[][] pasoPrevio;
+    private String puntoPrevio;
     boolean activado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        binding = ActivityTestBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
 
-        gridfondo = findViewById(R.id.Gridfondo);
-        gridjuego = findViewById(R.id.Gridjuego);
+        puntosTextview = binding.Puntos;
+        maxPuntosTextview = binding.MaxPuntos;
+
+        gridfondo = binding.Gridfondo;
+        gridjuego = binding.Gridjuego;
         this.configurarGrid(gridfondo, gridjuego, 4);
 
-        puntos = findViewById(R.id.Puntos);
-        maxPuntos = findViewById(R.id.MaxPuntos);
-
-        numTextViews = new int[4][4];
         textViews = new TextView[4][4];
         this.crear2dArray(gridjuego, 4);
 
-        this.anadirNumRandom();
-        this.anadirNumRandom();
-
-        for (TextView[] textView : textViews) {
-            for (int j = 0; j < textView.length; j++) {
-                repintar(textView[j]);
+        binding.undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pasoPrevio();
             }
-        }
+        });
+
+        binding.newgame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newGame();
+            }
+        });
+
+        this.newGame();
 
     }
 
     //----------------------------------------------------------------------------------------------
+
+    public void newGame() {
+        this.pasoPrevio = null;
+        this.puntosTextview.setText("0");
+        this.numTextViews = new int[4][4];
+        for (TextView[] textView : textViews) {
+            for (TextView view : textView) {
+                view.setText("0");
+                view.setVisibility(View.INVISIBLE);
+            }
+        }
+        this.anadirNumRandom();
+        this.anadirNumRandom();
+    }
+
+    public void pasoPrevio() {
+        if (pasoPrevio != null) {
+            this.puntosTextview.setText(puntoPrevio);
+            this.numTextViews = this.pasoPrevio;
+            for (int i = 0; i < numTextViews.length; i++) {
+                for (int j = 0; j < numTextViews[i].length; j++) {
+                    textViews[i][j].setText(String.valueOf(numTextViews[i][j]));
+                    this.repintar(textViews[i][j]);
+                }
+            }
+            pasoPrevio = null;
+        }
+    }
 
     //Gesture detector
     public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             activado = false;
+            pasoPrevio = copiarArray(numTextViews);
+            puntoPrevio = puntosTextview.getText().toString();
             try {
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
                 if (Math.abs(diffX) > Math.abs(diffY)) {
                     if (diffX > 0) {
-
-                        Toast.makeText(test.this, "Derecha", Toast.LENGTH_SHORT).show();
                         moverDerecha(numTextViews);
                     } else {
-                        Toast.makeText(test.this, "Izquierda", Toast.LENGTH_SHORT).show();
                         moverIzquierda(numTextViews);
                     }
                 } else {
                     if (diffY > 0) {
-                        Toast.makeText(test.this, "Abajo", Toast.LENGTH_SHORT).show();
                         moverAbajo(numTextViews);
                     } else {
-                        Toast.makeText(test.this, "Arriba", Toast.LENGTH_SHORT).show();
                         moverArriba(numTextViews);
                     }
                 }
@@ -157,6 +197,17 @@ public class test extends AppCompatActivity {
             this.anadirTextview(gridfondo, gridjuego);
         }
 
+    }
+
+    // Asigna al matriz de textviews los matrices de gridlayout
+    public void crear2dArray(GridLayout gridJuego, int numColumnaFila) {
+        int k = 0;
+        for (int i = 0; i < numColumnaFila; i++) {
+            for (int j = 0; j < numColumnaFila; j++) {
+                textViews[i][j] = (TextView) gridJuego.getChildAt(k);
+                k++;
+            }
+        }
     }
 
     //Busca los textiew que esta vacio "0" , lo mete en array y mete numero un 2 o 4 a los vacios
@@ -239,14 +290,14 @@ public class test extends AppCompatActivity {
 
     }
 
-    public void crear2dArray(GridLayout gridJuego, int numColumnaFila) {
-        int k = 0;
-        for (int i = 0; i < numColumnaFila; i++) {
-            for (int j = 0; j < numColumnaFila; j++) {
-                textViews[i][j] = (TextView) gridJuego.getChildAt(k);
-                k++;
+    public int[][] copiarArray(int[][] verdad) {
+        int[][] copia = new int[verdad.length][verdad.length];
+        for (int i = 0; i < verdad.length; i++) {
+            for (int j = 0; j < verdad.length; j++) {
+                copia[i][j] = verdad[i][j];
             }
         }
+        return copia;
     }
 //----------------------------------------------------------------------------------------------
 
@@ -364,7 +415,7 @@ public class test extends AppCompatActivity {
 
         // Dedino la animacion
         ObjectAnimator animation = ObjectAnimator.ofFloat(mover, direccion, distancia);
-        animation.setDuration(100);
+        animation.setDuration(200);
 
         ObjectAnimator animation2 = ObjectAnimator.ofFloat(mover, direccion, 0);
         animation2.setDuration(0);
@@ -414,8 +465,8 @@ public class test extends AppCompatActivity {
         this.numTextViews[numImover][numJmover] = 0;
 
         // Al juntar anade puntos
-        int puntosTotal = Integer.parseInt(this.puntos.getText().toString()) + this.numTextViews[numIfin][numJfin];
-        this.puntos.setText(String.valueOf(puntosTotal));
+        int puntosTotal = Integer.parseInt(this.puntosTextview.getText().toString()) + this.numTextViews[numIfin][numJfin];
+        this.puntosTextview.setText(String.valueOf(puntosTotal));
 
         // Lanza la animacion de mover
         this.animacionMover(textViews[numIfin][numJfin], textViews[numImover][numJmover],
