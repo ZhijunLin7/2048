@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.animation.ScaleAnimation;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a2048.databinding.ActivityTestBinding;
 
@@ -224,22 +226,23 @@ public class test extends AppCompatActivity {
                 }
             }
         }
-        //Coge un aleatorio de lo que hay en el arraylist
-        int ranNum = (int) (Math.random() * numI.size());
 
-        // 1/5 pondra un 4 y 4/5 pondra un 2 y lo coloca al array y al textview
-        int numeroAleatorio = (int) (Math.random() * 5);
-        if (numeroAleatorio == 1) {
-            this.numTextViews[numI.get(ranNum)][numJ.get(ranNum)] = 4;
-            this.textViews[numI.get(ranNum)][numJ.get(ranNum)].setText("4");
-            this.repintar(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
-        } else {
-            this.numTextViews[numI.get(ranNum)][numJ.get(ranNum)] = 2;
-            this.textViews[numI.get(ranNum)][numJ.get(ranNum)].setText("2");
-            this.repintar(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
-        }
+            //Coge un aleatorio de lo que hay en el arraylist
+            int ranNum = (int) (Math.random() * numI.size());
+            // 1/5 pondra un 4 y 4/5 pondra un 2 y lo coloca al array y al textview
+            int numeroAleatorio = (int) (Math.random() * 5);
+            if (numeroAleatorio == 1) {
+                this.numTextViews[numI.get(ranNum)][numJ.get(ranNum)] = 4;
+                this.textViews[numI.get(ranNum)][numJ.get(ranNum)].setText("4");
+                this.repintar(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
+            } else {
+                this.numTextViews[numI.get(ranNum)][numJ.get(ranNum)] = 2;
+                this.textViews[numI.get(ranNum)][numJ.get(ranNum)].setText("2");
+                this.repintar(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
+            }
 
-        this.animacionScale(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
+            this.animacionScale(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
+
     }
 
     //Pinta el color depende de numero
@@ -439,8 +442,8 @@ public class test extends AppCompatActivity {
                 //Hace la animacion de juntar
                 if (juntar) {
                     animacionScale(fin);
-                }
 
+                }
                 // Hace que el mover vuelve a su lugar
                 animation2.start();
 
@@ -449,6 +452,12 @@ public class test extends AppCompatActivity {
                     anadirNumRandom();
                     activado = true;
                     siguienteMovimiento =true;
+
+                    // Luego de añadir un numero mira si ha perdido
+                    if (verPerdido()){
+                        Log.d("testeo", "anadirNumRandom: perdiste");
+                        Toast.makeText(test.this,"Has perdido",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -485,36 +494,27 @@ public class test extends AppCompatActivity {
                 this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal, juntar);
     }
 
-    //Getter y Setters
-    public GridLayout getGridfondo() {
-        return gridfondo;
+    public boolean verPerdido(){
+        for (int i = 0; i < this.numTextViews.length; i++) {
+            for (int j = 0; j < this.numTextViews[i].length; j++) {
+                if (this.numTextViews[i][j] == 0) {
+                    return false;
+                }
+                if (i>0 && this.numTextViews[i][j] == this.numTextViews[i-1][j]) {
+                    return false;
+                }
+                if (i<this.numTextViews.length-1 && this.numTextViews[i][j] == this.numTextViews[i+1][j]) {
+                    return false;
+                }
+                if (j>0 && this.numTextViews[i][j] == this.numTextViews[i][j-1]) {
+                        return false;
+                }
+                if (j<this.numTextViews.length-1 && this.numTextViews[i][j] == this.numTextViews[i][j+1]) {
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
-    public void setGridfondo(GridLayout gridfondo) {
-        this.gridfondo = gridfondo;
-    }
-
-    public GridLayout getGridjuego() {
-        return gridjuego;
-    }
-
-    public void setGridjuego(GridLayout gridjuego) {
-        this.gridjuego = gridjuego;
-    }
-
-    public GestureDetectorCompat getGestureDetector() {
-        return gestureDetector;
-    }
-
-    public void setGestureDetector(GestureDetectorCompat gestureDetector) {
-        this.gestureDetector = gestureDetector;
-    }
-
-    public TextView[][] getTextViews() {
-        return textViews;
-    }
-
-    public void setTextViews(TextView[][] textViews) {
-        this.textViews = textViews;
-    }
 }
