@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
     public View makeView() {
         final ImageView i = new ImageView(this);
         i.setScaleType(ImageView.ScaleType.CENTER);
-        i.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        i.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        i.setScaleType(ImageView.ScaleType.CENTER);
+        i.setAdjustViewBounds(true);
         return i ;
     }
 
