@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fondo"
     tools:context=".Juego">
 
     <TextView
         android:id="@+id/view2048"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="2048"
-        android:textSize="60sp"
+        android:layout_margin="40dp"
+        android:text="LightOut"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,115 +21,76 @@
     <!--Puntos-->
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp">
 
         <TextView
-            android:id="@+id/Puntos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Puntos"
+            android:text="Timer"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/tiempoRestante"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="10:00"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp">
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Mejor"
+            android:text="Pasos"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/numpasos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="20"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
-    <!--Botones superior-->
-    <LinearLayout
-        android:id="@+id/navSuperior"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Boton" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Boton" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Boton" />
-
-    </LinearLayout>
-
-    <!--El fondo de carta del juego-->
-    <GridLayout
-        android:id="@+id/Gridfondo"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="20dp"
-        android:useDefaultMargins="true"
-        app:layout_constraintBottom_toTopOf="@+id/navInferior"
-        app:layout_constraintTop_toBottomOf="@+id/navSuperior">
-
-
-    </GridLayout>
-    <!--Donde estara los numeros del juego-->
+    <!--El juego-->
     <GridLayout
         android:id="@+id/Gridjuego"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:useDefaultMargins="true"
-        app:layout_constraintBottom_toTopOf="@+id/navInferior"
-        app:layout_constraintTop_toBottomOf="@+id/navSuperior">
+        app:layout_constraintBottom_toTopOf="@+id/navSuperior"
+        app:layout_constraintTop_toBottomOf="@+id/view2048"
+        tools:layout_editor_absoluteX="20dp">
 
 
     </GridLayout>
-    <!--Boton inferior-->
+
+    <!--Botones-->
     <LinearLayout
-        android:id="@+id/navInferior"
+        android:id="@+id/navSuperior"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -140,22 +100,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <ImageButton
+            android:id="@+id/home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Boton" />
+            android:layout_weight="1"
+            android:src="@drawable/img_home" />
 
-        <Button
+        <ImageButton
+            android:id="@+id/solution"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Boton" />
+            android:layout_weight="3"
+            android:src="@drawable/img_solution" />
 
-        <Button
+        <ImageButton
+            android:id="@+id/newgame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Boton" />
+            android:layout_weight="1"
+            android:src="@drawable/img_restart" />
 
     </LinearLayout>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

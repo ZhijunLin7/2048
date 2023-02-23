@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button botonComenzar;
+    private Button boton2048;
+    private Button botonlightout;
     private ImageButton botonSiguiente;
     private ImageButton BotonAnterior;
     private String[] numColumnaYFila = {"3x3", "4x4", "5x5", "6x6"};
@@ -27,11 +28,20 @@ public class MainActivity extends AppCompatActivity {
         verDimension = (TextView) findViewById(R.id.verDimension);
         verDimension.setText(numColumnaYFila[numPosicion]);
 
-        botonComenzar = (Button) findViewById(R.id.comenzar);
-        botonComenzar.setOnClickListener(new View.OnClickListener() {
+        boton2048 = (Button) findViewById(R.id.comenzar);
+        boton2048.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, test.class);
+                Intent intent = new Intent(MainActivity.this, Juego2048.class);
+                startActivity(intent);
+            }
+        });
+
+        botonlightout = (Button) findViewById(R.id.comenzar2);
+        botonlightout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Juegolightout.class);
                 startActivity(intent);
             }
         });

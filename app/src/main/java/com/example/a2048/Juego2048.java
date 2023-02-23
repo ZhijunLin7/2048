@@ -7,12 +7,16 @@ import androidx.core.view.GestureDetectorCompat;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -21,14 +25,15 @@ import android.view.animation.ScaleAnimation;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
-import com.example.a2048.databinding.ActivityTestBinding;
+import com.example.a2048.databinding.ActivityA2048Binding;
+
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class test extends AppCompatActivity {
+public class Juego2048 extends AppCompatActivity {
 
-    private ActivityTestBinding binding;
+    private ActivityA2048Binding binding;
     private GridLayout gridfondo;
     private GridLayout gridjuego;
     private GestureDetectorCompat gestureDetector;
@@ -45,7 +50,7 @@ public class test extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTestBinding.inflate(getLayoutInflater());
+        binding = ActivityA2048Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
@@ -187,6 +192,7 @@ public class test extends AppCompatActivity {
         gridfondo.setColumnCount(numColumnaFila);
         gridfondo.setRowCount(numColumnaFila);
 
+
         //Configuracion del gridjuego
         gridjuego.getLayoutParams().height = width - 40;
         gridjuego.setColumnCount(numColumnaFila);
@@ -224,9 +230,9 @@ public class test extends AppCompatActivity {
                 }
             }
         }
+
         //Coge un aleatorio de lo que hay en el arraylist
         int ranNum = (int) (Math.random() * numI.size());
-
         // 1/5 pondra un 4 y 4/5 pondra un 2 y lo coloca al array y al textview
         int numeroAleatorio = (int) (Math.random() * 5);
         if (numeroAleatorio == 1) {
@@ -240,6 +246,7 @@ public class test extends AppCompatActivity {
         }
 
         this.animacionScale(textViews[numI.get(ranNum)][numJ.get(ranNum)]);
+
     }
 
     //Pinta el color depende de numero
@@ -439,8 +446,8 @@ public class test extends AppCompatActivity {
                 //Hace la animacion de juntar
                 if (juntar) {
                     animacionScale(fin);
-                }
 
+                }
                 // Hace que el mover vuelve a su lugar
                 animation2.start();
 
@@ -449,6 +456,11 @@ public class test extends AppCompatActivity {
                     anadirNumRandom();
                     activado = true;
                     siguienteMovimiento =true;
+
+                    // Luego de añadir un numero mira si ha perdido
+                    if (verPerdido()){
+                        gameDialog(false);
+                    }
                 }
             }
         });
@@ -485,36 +497,49 @@ public class test extends AppCompatActivity {
                 this.numTextViews[numIfin][numJfin], numImover, numJmover, horizontal, juntar);
     }
 
-    //Getter y Setters
-    public GridLayout getGridfondo() {
-        return gridfondo;
+    public boolean verPerdido(){
+        for (int i = 0; i < this.numTextViews.length; i++) {
+            for (int j = 0; j < this.numTextViews[i].length; j++) {
+                if (this.numTextViews[i][j] == 0) {
+                    return false;
+                }
+                if (i>0 && this.numTextViews[i][j] == this.numTextViews[i-1][j]) {
+                    return false;
+                }
+                if (i<this.numTextViews.length-1 && this.numTextViews[i][j] == this.numTextViews[i+1][j]) {
+                    return false;
+                }
+                if (j>0 && this.numTextViews[i][j] == this.numTextViews[i][j-1]) {
+                    return false;
+                }
+                if (j<this.numTextViews.length-1 && this.numTextViews[i][j] == this.numTextViews[i][j+1]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
-    public void setGridfondo(GridLayout gridfondo) {
-        this.gridfondo = gridfondo;
+    public void gameDialog(boolean ganado){
+        String msg="Has perdido T-T ¿quieres jugar otra?";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(msg)
+                .setPositiveButton("Jugar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        newGame();
+                    }
+                })
+                .setNegativeButton("Menu", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(Juego2048.this,MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+        AlertDialog a=builder.create();
+        a.setCancelable(false);
+        a.show();
     }
 
-    public GridLayout getGridjuego() {
-        return gridjuego;
-    }
-
-    public void setGridjuego(GridLayout gridjuego) {
-        this.gridjuego = gridjuego;
-    }
-
-    public GestureDetectorCompat getGestureDetector() {
-        return gestureDetector;
-    }
-
-    public void setGestureDetector(GestureDetectorCompat gestureDetector) {
-        this.gestureDetector = gestureDetector;
-    }
-
-    public TextView[][] getTextViews() {
-        return textViews;
-    }
-
-    public void setTextViews(TextView[][] textViews) {
-        this.textViews = textViews;
-    }
 }
