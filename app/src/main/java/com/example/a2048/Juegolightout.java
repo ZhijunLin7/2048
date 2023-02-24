@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,10 +24,11 @@ public class Juegolightout extends AppCompatActivity {
 
     private ActivityLightoutBinding binding;
     private GridLayout gridJuego;
-    private GestureDetectorCompat gestureDetector;
     private Cell[][] cells;
     private int pasos;
-
+    private int dimension;
+    private CountDownTimer countDownTimer;
+    private int time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +36,18 @@ public class Juegolightout extends AppCompatActivity {
         binding=ActivityLightoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Intent intent = getIntent();
+        dimension=intent.getIntExtra("Dimension",0);
 
         gridJuego = binding.Gridjuego;
 
-        cells= new Cell[4][4];
-        this.configurarGrid(gridJuego, 4);
-        this.anadirOnclickListener(cells,4);
+        cells= new Cell[dimension][dimension];
+        this.configurarGrid(gridJuego, dimension);
+        this.anadirOnclickListener(cells,dimension);
 
         this.hacerJuego(cells);
+
+
 
     }
 
@@ -133,6 +139,23 @@ public class Juegolightout extends AppCompatActivity {
         //Reiniciar pasos al 20 y poner al text view
         this.pasos=20;
         binding.numpasos.setText(String.valueOf(this.pasos));
+        this.time=100;
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer= new CountDownTimer(time*1000,1000) {
+            @Override
+            public void onTick(long l) {
+                time= (int) l/1000;
+                binding.tiempoRestante.setText(String.valueOf(time));
+            }
+
+            @Override
+            public void onFinish() {
+                checkGanado(cells);
+            }
+        }.start();
 
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[0].length; j++) {
@@ -160,6 +183,7 @@ public class Juegolightout extends AppCompatActivity {
             }
         }
         this.pintar(cells);
+
     }
 
     public void apagarEncender(int i,int j){
@@ -239,7 +263,7 @@ public class Juegolightout extends AppCompatActivity {
                 this.gameDialog(true);
                 this.disableCell(cells);
             }
-        }else {
+        }else if(this.pasos == 0 || this.time==0){
             this.gameDialog(false);
             this.disableCell(cells);
         }

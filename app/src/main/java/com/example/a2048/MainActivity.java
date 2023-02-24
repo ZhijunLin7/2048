@@ -27,9 +27,11 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
 
     private GestureDetectorCompat gestureDetector;
     private int[] imgIds;
-    private int currentImagePosotion;
     private  ImageSwitcher imageSwitcher;
+    private int currentImagePosotion;
     private SeekBar indicadorImagen;
+    private String[] gamedimen;
+    private int currentdimenPosotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,50 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        this.imageSlider();
+        gamedimen=new String[]{"3x3","4x4","5x5"};
+        currentdimenPosotion=0;
+
+        binding.comenzar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentImagePosotion==0) {
+                    Intent intent = new Intent(MainActivity.this,Juego2048.class);
+                    intent.putExtra("Dimension",currentdimenPosotion+3);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(MainActivity.this,Juegolightout.class);
+                    intent.putExtra("Dimension",currentdimenPosotion+3);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        binding.siguiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentdimenPosotion = (currentdimenPosotion + 1) % gamedimen.length;
+                binding.verDimension.setText(gamedimen[currentdimenPosotion]);
+
+            }
+        });
+        binding.anterior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentdimenPosotion == 0) {
+                    currentdimenPosotion = gamedimen.length - 1;
+                    binding.verDimension.setText(gamedimen[currentdimenPosotion]);
+                } else {
+                    currentdimenPosotion = (currentdimenPosotion - 1) % gamedimen.length;
+                    binding.verDimension.setText(gamedimen[currentdimenPosotion]);
+                }
+            }
+        });
+
+    }
+
+    // Congigura  el slide de imagen y sel seekbar que indica cuantos imagen hay.
+    public void imageSlider(){
         indicadorImagen=binding.SliderIndicator;
         imageSwitcher = binding.imageSwitcher;
 
@@ -73,8 +119,7 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
     public View makeView() {
         final ImageView i = new ImageView(this);
         i.setScaleType(ImageView.ScaleType.CENTER);
-        i.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        i.setScaleType(ImageView.ScaleType.CENTER);
+        i.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         i.setAdjustViewBounds(true);
         return i ;
     }
@@ -109,5 +154,9 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    public void congigurarBotones(){
+
     }
 }

@@ -37,6 +37,7 @@ public class Juego2048 extends AppCompatActivity {
     private GridLayout gridfondo;
     private GridLayout gridjuego;
     private GestureDetectorCompat gestureDetector;
+    private int dimension;
 
     private TextView[][] textViews;
     private int[][] numTextViews;
@@ -53,6 +54,9 @@ public class Juego2048 extends AppCompatActivity {
         binding = ActivityA2048Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Intent intent = getIntent();
+        dimension=intent.getIntExtra("Dimension",0);
+
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
 
         puntosTextview = binding.Puntos;
@@ -60,10 +64,18 @@ public class Juego2048 extends AppCompatActivity {
 
         gridfondo = binding.Gridfondo;
         gridjuego = binding.Gridjuego;
-        this.configurarGrid(gridfondo, gridjuego, 4);
+        this.configurarGrid(gridfondo, gridjuego, dimension);
 
-        textViews = new TextView[4][4];
-        this.crear2dArray(gridjuego, 4);
+        textViews = new TextView[dimension][dimension];
+        this.crear2dArray(gridjuego, dimension);
+
+        binding.home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Juego2048.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         binding.undo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +100,7 @@ public class Juego2048 extends AppCompatActivity {
     public void newGame() {
         this.pasoPrevio = null;
         this.puntosTextview.setText("0");
-        this.numTextViews = new int[4][4];
+        this.numTextViews = new int[dimension][dimension];
         for (TextView[] textView : textViews) {
             for (TextView view : textView) {
                 view.setVisibility(View.INVISIBLE);
