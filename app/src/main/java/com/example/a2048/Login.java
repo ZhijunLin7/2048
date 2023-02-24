@@ -35,11 +35,16 @@ public class Login extends AppCompatActivity {
                     String contra=binding.e2.getText().toString();
 
                     Usuario u =sql.getUsuario(usuario);
-                    if (u.getUsuario().equals(usuario) && u.getContra().equals(contra)) {
-                        intent.putExtra("usuario",usuario);
-                        startActivity(intent);
+                    if (u != null) {
+                        if (u.getContra().equals(contra)) {
+                            intent.putExtra("usuario",usuario);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(Login.this,"Error de contraseña",Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(Login.this,"No existe usuario",Toast.LENGTH_SHORT).show();
                     }
-
                 }else{
                     login=true;
                     binding.t3.setVisibility(View.INVISIBLE);
@@ -58,7 +63,7 @@ public class Login extends AppCompatActivity {
                     String contra=binding.e2.getText().toString();
                     String contra2=binding.e3.getText().toString();
 
-                    if (contra.equals(contra2)) {
+                    if (!contra.equals("") && contra.equals(contra2)) {
                         if (sql.getUsuario(usuario).getUsuario()==null) {
                             sql.addUsuario(usuario,contra);
                             intent.putExtra("usuario",usuario);

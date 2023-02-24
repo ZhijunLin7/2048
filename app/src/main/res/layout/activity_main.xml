@@ -8,11 +8,13 @@
 
     <ImageSwitcher
         android:id="@+id/imageSwitcher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
     <SeekBar
         android:id="@+id/SliderIndicator"
@@ -28,14 +30,18 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SliderIndicator">
+        app:layout_constraintTop_toBottomOf="@+id/SliderIndicator"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <ImageButton
             android:id="@+id/anterior"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/img_anterior" />
+            android:src="@drawable/img_anterior"
+            android:background="@drawable/carta_juego"
+            android:backgroundTint="@color/color64" />
 
         <TextView
             android:id="@+id/verDimension"
@@ -52,7 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/img_siguiente" />
+            android:src="@drawable/img_siguiente"
+            android:background="@drawable/carta_juego"
+            android:backgroundTint="@color/color64"/>
 
     </LinearLayout>
 
@@ -62,8 +70,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/jugar" />
+                android:src="@drawable/jugar"
+                android:background="@drawable/carta_juego"
+                android:backgroundTint="@color/color128"/>
         </LinearLayout>
 
         <LinearLayout
@@ -82,19 +95,14 @@
             android:layout_height="wrap_content">
 
             <ImageButton
+                android:id="@+id/ranking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ranking" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/settings" />
+                android:src="@drawable/ranking"
+                android:background="@drawable/carta_juego"
+                android:backgroundTint="@color/color128"/>
         </LinearLayout>
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

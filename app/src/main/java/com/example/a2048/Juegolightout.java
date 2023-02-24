@@ -14,8 +14,10 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.a2048.databinding.ActivityLightoutBinding;
 
@@ -137,7 +139,7 @@ public class Juegolightout extends AppCompatActivity {
 
     public void  hacerJuego(Cell [][] cells){
         //Reiniciar pasos al 20 y poner al text view
-        this.pasos=20;
+        this.pasos=25;
         binding.numpasos.setText(String.valueOf(this.pasos));
         this.time=100;
         if (countDownTimer != null) {
@@ -190,18 +192,23 @@ public class Juegolightout extends AppCompatActivity {
 
         this.cambiarEstadoSolucion(cells[i][j]);
         this.cambiarEstadoYImagen(cells[i][j]);
+        this.animacionScale(cells[i][j]);
 
         if (i > 0) {
             this.cambiarEstadoYImagen(cells[i-1][j]);
+            this.animacionScale(cells[i-1][j]);
         }
         if (i < cells.length-1) {
             this.cambiarEstadoYImagen(cells[i+1][j]);
+            this.animacionScale(cells[i+1][j]);
         }
         if (j > 0) {
             this.cambiarEstadoYImagen(cells[i][j-1]);
+            this.animacionScale(cells[i][j-1]);
         }
         if (j < cells.length-1) {
             this.cambiarEstadoYImagen(cells[i][j+1]);
+            this.animacionScale(cells[i][j+1]);
         }
         this.pasos-=1;
         binding.numpasos.setText(String.valueOf(this.pasos));
@@ -232,6 +239,7 @@ public class Juegolightout extends AppCompatActivity {
             for (int j = 0; j < cells[0].length; j++) {
                 if (cells[i][j].isSolucion()) {
                     cells[i][j].setBackgroundResource(R.drawable.zombi_mano);
+                    this.animacionScale(cells[i][j]);
                 }
             }
         }
@@ -242,8 +250,10 @@ public class Juegolightout extends AppCompatActivity {
             for (int j = 0; j < cells[0].length; j++) {
                 if (cells[i][j].isEncendido()) {
                     cells[i][j].setBackgroundResource(R.drawable.zombi);
+                    this.animacionScale(cells[i][j]);
                 }else{
                     cells[i][j].setBackgroundResource(R.drawable.zombi_sin_color);
+                    this.animacionScale(cells[i][j]);
                 }
             }
         }
@@ -295,10 +305,15 @@ public class Juegolightout extends AppCompatActivity {
                     }
                 });
 
-
         AlertDialog a=builder.create();
         a.setCancelable(false);
         a.show();
+    }
+
+    public void animacionScale(ImageButton imageButton) {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 1.2f, 1f, 1.2f, 100, 100);
+        scaleAnimation.setDuration(100);
+        imageButton.startAnimation(scaleAnimation);
     }
 
     public void disableCell(Cell[][] cells){

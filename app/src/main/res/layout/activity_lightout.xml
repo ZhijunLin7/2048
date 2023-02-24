@@ -10,8 +10,8 @@
         android:id="@+id/topLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,25 +20,25 @@
             android:id="@+id/view2048"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="LightOut"
-            android:textSize="28sp"
-            android:layout_margin="20dp"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <!--Puntos-->
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:background="@drawable/carta2048">
+            android:background="@drawable/carta2048"
+            android:layout_marginRight="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Timer"
@@ -59,15 +59,14 @@
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:layout_weight="1"
             android:background="@drawable/carta2048">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Pasos"
@@ -79,7 +78,7 @@
                 android:id="@+id/numpasos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20"
+                android:text="25"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>

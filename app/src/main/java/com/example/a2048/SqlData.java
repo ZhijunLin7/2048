@@ -21,8 +21,8 @@ public class SqlData extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS usuario ( 'id' INTEGER PRIMARY KEY AUTOINCREMENT, 'usuario' TEXT, 'contra' TEXT )");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS data2048 ( 'id' INTEGER PRIMARY KEY AUTOINCREMENT,'user_id' INTEGER, 'puntos' INTEGER ,FOREIGN KEY (user_id) REFERENCES usuario(id))");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS datalightout ( 'id' INTEGER PRIMARY KEY AUTOINCREMENT,'user_id' INTEGER, 'pasos_restante' INTEGER, 'tiempo_restante' INTEGER ,FOREIGN KEY (user_id) REFERENCES usuario(id))");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS data2048 ( 'id' INTEGER PRIMARY KEY AUTOINCREMENT,'user_id' INTEGER,'dimension' INTEGER, 'puntos' INTEGER ,FOREIGN KEY (user_id) REFERENCES usuario(id))");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS datalightout ( 'id' INTEGER PRIMARY KEY AUTOINCREMENT,'user_id' INTEGER,'dimension' INTEGER, 'pasos_restante' INTEGER, 'tiempo_restante' INTEGER ,FOREIGN KEY (user_id) REFERENCES usuario(id))");
     }
 
     @Override
@@ -43,16 +43,15 @@ public class SqlData extends SQLiteOpenHelper {
     public Usuario getUsuario(String username) {
         String [] arg= {username};
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from comentarios where titol = ? ",arg);
-
+        Cursor cursor = db.rawQuery("select * from usuario where usuario = ? ",arg);
         Usuario u = new Usuario();
         if (cursor.getCount()>0) {
             cursor.moveToFirst();
             u.setUsuario(cursor.getString(cursor.getColumnIndex("usuario")));
             u.setContra(cursor.getString(cursor.getColumnIndex("contra")));
         }
-
         db.close();
         return u;
     }
+
 }

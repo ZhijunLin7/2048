@@ -2,6 +2,7 @@ package com.example.a2048;
 
 public class Usuario {
 
+    private int id;
     private String usuario;
     private String contra;
 
@@ -11,6 +12,14 @@ public class Usuario {
     }
     public Usuario() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsuario() {

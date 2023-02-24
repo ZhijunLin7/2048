@@ -79,6 +79,14 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
             }
         });
 
+        binding.ranking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,GameRanking.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     // Congigura  el slide de imagen y sel seekbar que indica cuantos imagen hay.
