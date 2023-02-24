@@ -258,7 +258,7 @@ public class Juegolightout extends AppCompatActivity {
                 }
             }
         }
-        if (this.pasos > 0 ) {
+        if (this.pasos > 0 && this.time>0) {
             if (ganado) {
                 this.gameDialog(true);
                 this.disableCell(cells);

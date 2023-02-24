@@ -49,7 +49,7 @@ public class SplashAnimation extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         binding.SplashImage.setVisibility(View.INVISIBLE);
-                        Intent intent = new Intent(SplashAnimation.this,MainActivity.class);
+                        Intent intent = new Intent(SplashAnimation.this,Login.class);
                         startActivity(intent);
                     }
 
