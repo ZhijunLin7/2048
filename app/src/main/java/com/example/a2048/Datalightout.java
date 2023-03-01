@@ -2,13 +2,14 @@ package com.example.a2048;
 
 public class Datalightout {
 
-    private String user;
+    private int user_id;
+    private String name;
     private int dimension;
     private int pasos_restante;
     private int tiempo_restante;
 
-    public Datalightout(String user, int dimension, int pasos_restante, int tiempo_restante) {
-        this.user = user;
+    public Datalightout(int user_id, int dimension, int pasos_restante, int tiempo_restante) {
+        this.user_id = user_id;
         this.dimension = dimension;
         this.pasos_restante = pasos_restante;
         this.tiempo_restante = tiempo_restante;
@@ -18,12 +19,12 @@ public class Datalightout {
 
     }
 
-    public String getUser_id() {
-        return user;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setUser_id(String user) {
-        this.user = user;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public int getDimension() {
@@ -48,5 +49,13 @@ public class Datalightout {
 
     public void setTiempo_restante(int tiempo_restante) {
         this.tiempo_restante = tiempo_restante;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

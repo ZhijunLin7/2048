@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/baground">
 
     <TextView
         android:id="@+id/textview"
@@ -36,7 +37,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/t1"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
@@ -46,7 +47,8 @@
         app:counterEnabled="true"
         app:counterMaxLength="12"
         app:helperTextTextColor="@color/teal_200"
-        app:startIconDrawable="@drawable/img_person">
+        app:startIconDrawable="@drawable/img_person"
+        app:counterTextColor="@color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/e1"
@@ -58,7 +60,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/t2"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/t1"
@@ -80,7 +82,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/t3"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/t2"

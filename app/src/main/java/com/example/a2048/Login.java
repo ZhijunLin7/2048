@@ -35,9 +35,9 @@ public class Login extends AppCompatActivity {
                     String contra=binding.e2.getText().toString();
 
                     Usuario u =sql.getUsuario(usuario);
-                    if (u != null) {
+                    if (u.getUsuario() != null) {
                         if (u.getContra().equals(contra)) {
-                            intent.putExtra("usuario",usuario);
+                            intent.putExtra("Usuario",usuario);
                             startActivity(intent);
                         }else{
                             Toast.makeText(Login.this,"Error de contraseña",Toast.LENGTH_SHORT).show();
@@ -65,8 +65,8 @@ public class Login extends AppCompatActivity {
 
                     if (!contra.equals("") && contra.equals(contra2)) {
                         if (sql.getUsuario(usuario).getUsuario()==null) {
-                            sql.addUsuario(usuario,contra);
-                            intent.putExtra("usuario",usuario);
+                            sql.insertUsuario(usuario,contra);
+                            intent.putExtra("Usuario",usuario);
                             startActivity(intent);
                         }else {
                             Toast.makeText(Login.this,"Ya existe el usuario",Toast.LENGTH_SHORT).show();

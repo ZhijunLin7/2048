@@ -1,29 +1,25 @@
 package com.example.a2048;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GestureDetectorCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
+
 import com.example.a2048.databinding.ActivityMainBinding;
-import com.google.android.material.slider.Slider;
 
 public class MainActivity extends AppCompatActivity implements ViewSwitcher.ViewFactory {
 
     private ActivityMainBinding binding;
+    private String usuario;
 
     private GestureDetectorCompat gestureDetector;
     private int[] imgIds;
@@ -39,53 +35,14 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Intent intent = getIntent();
+        usuario=intent.getStringExtra("Usuario");
+
         this.imageSlider();
         gamedimen=new String[]{"3x3","4x4","5x5"};
         currentdimenPosotion=0;
 
-        binding.comenzar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentImagePosotion==0) {
-                    Intent intent = new Intent(MainActivity.this,Juego2048.class);
-                    intent.putExtra("Dimension",currentdimenPosotion+3);
-                    startActivity(intent);
-                }else {
-                    Intent intent = new Intent(MainActivity.this,Juegolightout.class);
-                    intent.putExtra("Dimension",currentdimenPosotion+3);
-                    startActivity(intent);
-                }
-            }
-        });
-
-        binding.siguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentdimenPosotion = (currentdimenPosotion + 1) % gamedimen.length;
-                binding.verDimension.setText(gamedimen[currentdimenPosotion]);
-
-            }
-        });
-        binding.anterior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentdimenPosotion == 0) {
-                    currentdimenPosotion = gamedimen.length - 1;
-                    binding.verDimension.setText(gamedimen[currentdimenPosotion]);
-                } else {
-                    currentdimenPosotion = (currentdimenPosotion - 1) % gamedimen.length;
-                    binding.verDimension.setText(gamedimen[currentdimenPosotion]);
-                }
-            }
-        });
-
-        binding.ranking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,GameRanking.class);
-                startActivity(intent);
-            }
-        });
+       this.configurarBotones();
 
     }
 
@@ -164,7 +121,37 @@ public class MainActivity extends AppCompatActivity implements ViewSwitcher.View
         return super.onTouchEvent(event);
     }
 
-    public void congigurarBotones(){
+    public void configurarBotones(){
+        binding.comenzar.setOnClickListener(view -> {
+            Intent intent12;
+            if (currentImagePosotion==0) {
+                intent12 = new Intent(MainActivity.this, Juego2048.class);
+            }else {
+                intent12 = new Intent(MainActivity.this, Juegolightout.class);
+            }
+            intent12.putExtra("Dimension",currentdimenPosotion+3);
+            intent12.putExtra("Usuario",usuario);
+            startActivity(intent12);
+        });
 
+        binding.siguiente.setOnClickListener(view -> {
+            currentdimenPosotion = (currentdimenPosotion + 1) % gamedimen.length;
+            binding.verDimension.setText(gamedimen[currentdimenPosotion]);
+
+        });
+        binding.anterior.setOnClickListener(view -> {
+            if (currentdimenPosotion == 0) {
+                currentdimenPosotion = gamedimen.length - 1;
+                binding.verDimension.setText(gamedimen[currentdimenPosotion]);
+            } else {
+                currentdimenPosotion = (currentdimenPosotion - 1) % gamedimen.length;
+                binding.verDimension.setText(gamedimen[currentdimenPosotion]);
+            }
+        });
+
+        binding.ranking.setOnClickListener(view -> {
+            Intent intent1 = new Intent(MainActivity.this,GameRanking.class);
+            startActivity(intent1);
+        });
     }
 }

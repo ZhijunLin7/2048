@@ -25,6 +25,8 @@ import com.example.a2048.databinding.ActivityLightoutBinding;
 public class Juegolightout extends AppCompatActivity {
 
     private ActivityLightoutBinding binding;
+    private SqlData sql;
+    private String usuario;
     private GridLayout gridJuego;
     private Cell[][] cells;
     private int pasos;
@@ -40,17 +42,18 @@ public class Juegolightout extends AppCompatActivity {
 
         Intent intent = getIntent();
         dimension=intent.getIntExtra("Dimension",0);
+        usuario=intent.getStringExtra("Usuario");
 
+        sql = new SqlData(this);
+        // Configurar el entorno de juego
         gridJuego = binding.Gridjuego;
 
         cells= new Cell[dimension][dimension];
         this.configurarGrid(gridJuego, dimension);
         this.anadirOnclickListener(cells,dimension);
 
+        // Comenzar juego
         this.hacerJuego(cells);
-
-
-
     }
 
     //----------------------------------------------------------------------------------------------
@@ -99,27 +102,22 @@ public class Juegolightout extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     public void anadirOnclickListener(ImageButton[][] imageButtons,int numColumnaFila) {
 
-        binding.home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Juegolightout.this,MainActivity.class);
-                startActivity(intent);
-            }
+        binding.home.setOnClickListener(view -> {
+            Intent intent = new Intent(Juegolightout.this,MainActivity.class);
+            intent.putExtra("Usuario",usuario);
+            startActivity(intent);
         });
 
-        binding.solution.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        pintarRespuesta(cells);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        pintar(cells);
-                        break;
-                }
-                return false;
+        binding.solution.setOnTouchListener((view, motionEvent) -> {
+            switch (motionEvent.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    pintarRespuesta(cells);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    pintar(cells);
+                    break;
             }
+            return false;
         });
 
         binding.newgame.setOnClickListener(view -> hacerJuego(cells));
@@ -139,14 +137,14 @@ public class Juegolightout extends AppCompatActivity {
 
     public void  hacerJuego(Cell [][] cells){
         //Reiniciar pasos al 20 y poner al text view
-        this.pasos=25;
+        this.pasos=100;
         binding.numpasos.setText(String.valueOf(this.pasos));
         this.time=100;
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
 
-        countDownTimer= new CountDownTimer(time*1000,1000) {
+        countDownTimer= new CountDownTimer(time* 1000L,1000) {
             @Override
             public void onTick(long l) {
                 time= (int) l/1000;
@@ -270,6 +268,7 @@ public class Juegolightout extends AppCompatActivity {
         }
         if (this.pasos > 0 && this.time>0) {
             if (ganado) {
+                sql.adddatalightout(usuario,dimension,pasos,time);
                 this.gameDialog(true);
                 this.disableCell(cells);
             }
@@ -301,6 +300,7 @@ public class Juegolightout extends AppCompatActivity {
                 .setNegativeButton("Menu", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(Juegolightout.this,MainActivity.class);
+                        intent.putExtra("Usuario",usuario);
                         startActivity(intent);
                     }
                 });

@@ -17,6 +17,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -34,6 +35,8 @@ import java.util.Objects;
 public class Juego2048 extends AppCompatActivity {
 
     private ActivityA2048Binding binding;
+    private SqlData sql;
+    private String usuario;
     private GridLayout gridfondo;
     private GridLayout gridjuego;
     private GestureDetectorCompat gestureDetector;
@@ -56,7 +59,10 @@ public class Juego2048 extends AppCompatActivity {
 
         Intent intent = getIntent();
         dimension=intent.getIntExtra("Dimension",0);
+        usuario=intent.getStringExtra("Usuario");
+        sql = new SqlData(this);
 
+        // Configurar el entorno de juego
         gestureDetector = new GestureDetectorCompat(this, new GestureListener());
 
         puntosTextview = binding.Puntos;
@@ -72,8 +78,7 @@ public class Juego2048 extends AppCompatActivity {
         binding.home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Juego2048.this,MainActivity.class);
-                startActivity(intent);
+                volverAMain();
             }
         });
 
@@ -90,14 +95,25 @@ public class Juego2048 extends AppCompatActivity {
                 newGame();
             }
         });
-        siguienteMovimiento =true;
+
+        // Consigue punto maximo si existe
+        String mpuntos=sql.getMaxpuntosByname(usuario,dimension);
+        if (mpuntos != null) {
+            maxPuntosTextview.setText(mpuntos);
+        }
+        // Comenzar juego
         this.newGame();
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
     //----------------------------------------------------------------------------------------------
 
     public void newGame() {
+        this.siguienteMovimiento =true;
         this.pasoPrevio = null;
         this.puntosTextview.setText("0");
         this.numTextViews = new int[dimension][dimension];
@@ -469,8 +485,12 @@ public class Juego2048 extends AppCompatActivity {
                     activado = true;
                     siguienteMovimiento =true;
 
-                    // Luego de añadir un numero mira si ha perdido
+                    // Luego de añadir un numero mira si ha perdido en caso de si insierta al base de datos y muestra el dialog
                     if (verPerdido()){
+                        sql.adddata2048(usuario,dimension, Integer.parseInt(puntosTextview.getText().toString()));
+                        if (Integer.parseInt(puntosTextview.getText().toString()) > Integer.parseInt(maxPuntosTextview.getText().toString())) {
+                            maxPuntosTextview.setText(puntosTextview.getText());
+                        }
                         gameDialog(false);
                     }
                 }
@@ -544,14 +564,22 @@ public class Juego2048 extends AppCompatActivity {
                 })
                 .setNegativeButton("Menu", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(Juego2048.this,MainActivity.class);
-                        startActivity(intent);
+                        volverAMain();
                     }
                 });
 
         AlertDialog a=builder.create();
         a.setCancelable(false);
         a.show();
+    }
+
+    public void volverAMain(){
+        Intent intent = new Intent(Juego2048.this,MainActivity.class);
+        intent.putExtra("Usuario",usuario);
+        if (puntosTextview.getText().toString() != "0") {
+            sql.adddata2048(usuario,dimension, Integer.parseInt(puntosTextview.getText().toString()));
+        }
+        startActivity(intent);
     }
 
 }
